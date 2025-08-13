@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity - Digital Artist & CS Student</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
+        }
+
+        .ultron-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background-image: url('ultron.webp');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+            animation: slowPulse 8s ease-in-out infinite;
+        }
+
+        /* Desktop-specific adjustments to show more face */
+        @media (min-width: 1200px) {
+            .ultron-bg {
+                width: 120%;
+                height: 120%;
+                background-position: center 25%;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1199px) {
+            .ultron-bg {
+                width: 130%;
+                height: 130%;
+                background-position: center 28%;
+            }
+        }
+
+        /* Mobile-specific background adjustments */
+        @media (max-width: 768px) {
+            .ultron-bg {
+                background-size: contain;
+                background-position: center center;
+                width: 90%;
+                height: 100%;
+                opacity: 0.3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ultron-bg {
+                background-size: 120%;
+                background-position: center 20%;
+                width: 100%;
+                height: 120%;
+                opacity: 0.25;
+            }
+        }
+
+        @keyframes slowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.4; }
+        }
+
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00bcd4;
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #00bcd4;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #00bcd4;
+            font-size: 1.5rem;
+            cursor: pointer;
+            float: right;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #00bcd4;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00bcd4, #ff9800);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: radial-gradient(circle at center, rgba(0, 188, 212, 0.1), transparent);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00bcd4, #ff9800);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(0, 188, 212, 0.3)); }
+            100% { filter: drop-shadow(0 0 20px rgba(0, 188, 212, 0.6)); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #00bcd4, #ff9800);
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            animation: buttonPulse 2s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 188, 212, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 188, 212, 0.6); }
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Skills Section */
+        .skills {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00bcd4;
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 188, 212, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff9800;
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.2);
+        }
+
+        .skill-card h3 {
+            color: #00bcd4;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            background: radial-gradient(circle at center, rgba(255, 152, 0, 0.1), transparent);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00bcd4;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00bcd4;
+            font-size: 0.9rem;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: #00bcd4;
+            padding: 15px 10px 10px;
+            font-size: 0.8rem;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: #ff9800;
+            box-shadow: 0 0 30px rgba(0, 188, 212, 0.4);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(0, 188, 212, 0.1), rgba(255, 152, 0, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: #fff;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: #00bcd4;
+            font-size: 2rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .lightbox-prev {
+            left: -60px;
+        }
+
+        .lightbox-next {
+            right: -60px;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+        }
+
+        .contact-form {
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00bcd4;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00bcd4;
+            border-radius: 5px;
+            color: #fff;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff9800;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Section Titles */
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00bcd4;
+            text-align: center;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #00bcd4, #ff9800);
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .lightbox-nav {
+                font-size: 1.5rem;
+                padding: 8px 12px;
+            }
+
+            .lightbox-prev {
+                left: -50px;
+            }
+
+            .lightbox-next {
+                right: -50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-container">
+        <div class="ultron-bg"></div>
+    </div>
+
+    <!-- Particle System -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <button class="nav-toggle" id="nav-toggle">☰</button>
+            <ul id="nav-menu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="section hero">
+            <div class="container">
+                <h1>ENTITY</h1>
+                <p>Digital Artist & CS Student</p>
+                <p>Exploring the intersection of art, AI, and technology</p>
+                <a href="#gallery" class="cta-button">View My Work</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About</h2>
+                <p>I'm Entity, a computer science student passionate about digital art and artificial intelligence. Through Blender, Python, and machine learning frameworks like TensorFlow and PyTorch, I create art that bridges the gap between technology and creativity.</p>
+                <p>My work explores themes of cyberpunk aesthetics, AI consciousness, and the future of human-machine interaction.</p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section skills">
+            <div class="container">
+                <h2>Skills & Tools</h2>
+                <div class="skill-grid">
+                    <div class="skill-card">
+                        <h3>3D Art & Animation</h3>
+                        <p>Blender, 3D Modeling, Texturing, Lighting, Animation</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Programming</h3>
+                        <p>Python, JavaScript, C++, Algorithm Design</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>AI/Machine Learning</h3>
+                        <p>TensorFlow, PyTorch, Neural Networks, Computer Vision</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Digital Art</h3>
+                        <p>Digital Painting, Concept Art, UI/UX Design</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section gallery">
+            <div class="container">
+                <h2>Art Gallery</h2>
+                <p>A showcase of my digital artworks</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-index="0">
+                        <img src="art1.jpg" alt="Floral Skull">
+                        <div class="gallery-overlay">
+                            <span>Floral Skull<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="1">
+                        <img src="art2.jpg" alt="memento mori">
+                        <div class="gallery-overlay">
+                            <span>memento mori<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="2">
+                        <img src="art3.jpg" alt="Bandaged Portrait">
+                        <div class="gallery-overlay">
+                            <span>Bandaged Portrait<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="3">
+                        <img src="art4.jpg" alt="Voyager">
+                        <div class="gallery-overlay">
+                            <span>Voyager<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="4">
+                        <img src="art5.jpg" alt="The Knight">
+                        <div class="gallery-overlay">
+                            <span>The Knight<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="5">
+                        <img src="art6.jpg" alt="Tinted Gaze">
+                        <div class="gallery-overlay">
+                            <span>Tinted Gaze<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="6">
+                        <img src="art7.jpg" alt="Hello There">
+                        <div class="gallery-overlay">
+                            <span>Hello There<br><small></small></span>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-index="7">
+                        <img src="art8.jpg" alt="Tech Noir">
+                        <div class="gallery-overlay">
+                            <span>Holding on to Love<br><small></small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <p>Interested in collaboration or commissioning artwork?</p>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close">×</button>
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev">‹</button>
+        <div class="lightbox-content" id="lightbox-content">
+            <img src="" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightbox-next">›</button>
+    </div>
+
+    <script>
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#00bcd4', '#ff9800', '#4fc3f7', '#ffb74d'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Mobile Navigation
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navMenu.classList.remove('active');
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Gallery Lightbox
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        const lightboxContent = document.getElementById('lightbox-content');
+        
+        let currentImageIndex = 0;
+        
+        // Entity's artwork images
+        const galleryImages = [
+            'art1.jpg',
+            'art2.jpg',
+            'art3.jpg',
+            'art4.jpg',
+            'art5.jpg',
+            'art6.jpg',
+            'art7.jpg',
+            'art8.jpg'
+        ];
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            lightboxContent.querySelector('img').src = galleryImages[index];
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            lightboxContent.querySelector('img').src = galleryImages[currentImageIndex];
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            lightboxContent.querySelector('img').src = galleryImages[currentImageIndex];
+        }
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => openLightbox(index));
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', nextImage);
+        lightboxPrev.addEventListener('click', prevImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.style.display === 'flex') {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            }
+        });
+
+        // Parallax Effect with mobile optimization
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const ultronBg = document.querySelector('.ultron-bg');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Reduced parallax effect on mobile for better performance and positioning
+                ultronBg.style.transform = `translate(-50%, ${-50 + scrolled * 0.1}%)`;
+            } else {
+                ultronBg.style.transform = `translate(-50%, ${-50 + scrolled * 0.3}%) scale(${1 + scrolled * 0.0001})`;
+            }
+        });
+
+        // Contact Form
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            e.target.reset();
+        });
+
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>
